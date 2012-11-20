@@ -1,0 +1,9 @@
+Package: qsarr
+Type: Package
+Title: qsaR in R - A flexible framework for working with QSAR and QSPR in R
+Version: 1.0
+Date: 2012-11-20
+Author: Rodolpho C. Braga
+Maintainer: Who to complain to <rodolpho.braga@icloud.com>
+Description: This project aims at building a flexible framework for working with QSAR in R. 
+License: GPL2
