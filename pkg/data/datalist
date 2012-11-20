@@ -1,0 +1,4 @@
+BloodBrain: bbbDescr logBBB
+cox2: cox2Class cox2Descr cox2IC50
+mdrr: mdrrClass mdrrDescr
+
