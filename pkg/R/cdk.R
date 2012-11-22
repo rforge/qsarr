@@ -1,6 +1,6 @@
 ###########Loading all necessary libraries###########
-
-
+library(rcdk)
+descriptors <- get.desc.categories()
 ###########Generating 2D CDK descriptors###########
 cdk.2d <- {
 c("org.openscience.cdk.qsar.descriptors.molecular.AutocorrelationDescriptorCharge",        
@@ -60,3 +60,15 @@ cdk.3d <- {
     "org.openscience.cdk.qsar.descriptors.molecular.PetitjeanShapeIndexDescriptor",
     "org.openscience.cdk.qsar.descriptors.molecular.WHIMDescriptor")
 }
+###########Generating CDK electronic descriptors###########
+cdk.electronic <- get.desc.names(descriptors[1])
+###########Generating CDK protein descriptors###########
+cdk.protein <- get.desc.names(descriptors[2])
+###########Generating CDK topological descriptors###########
+cdk.topological <- get.desc.names(descriptors[3])
+###########Generating CDK geometrical descriptors###########
+cdk.geometrical <- get.desc.names(descriptors[4])
+###########Generating CDK constitutional descriptors###########
+cdk.constitutional <- get.desc.names(descriptors[5])
+###########Generating CDK hybrid descriptors###########
+cdk.hybrid <- get.desc.names(descriptors[6])

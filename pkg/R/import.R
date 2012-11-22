@@ -1,4 +1,70 @@
-source('call.R')
-# importar dados no formato csv na sequência: 1. y resposta biológica 2. x - descritores
-qsar.activity <- read.csv(file.choose(),sep = ",", header=TRUE)
-qsar.descriptors <- read.csv(file.choose(),sep = ",", header=TRUE)
+source('R/cdk.R', echo=TRUE)
+#import variable dragon
+dragon <- 4
+electronic <- 5
+protein <- 6
+topological <- 7
+geometrical <- 8
+constitutional <- 9
+hybrid <- 10
+
+import <- function(qsar=11 , ... ){
+{if ((qsar) == 2) {; 
+                   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+                   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+                   molec <- load.molecules(file.choose())
+                   assign("molecules", molec, envir=.GlobalEnv)
+                   qsar.descriptors.func <- eval.desc(molecules, cdk.2d);
+                   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == 3){;
+                        qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+                        assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+                        molec <- load.molecules(file.choose())
+                        assign("molecules", molec, envir=.GlobalEnv)
+                        qsar.descriptors.func <- eval.desc(molecules, cdk.3d);
+                        assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv) 
+} else if ((qsar) == (dragon)) {;
+                                qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+                                assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+                                qsar.descriptors.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+                                assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == electronic){
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+  molec <- load.molecules(file.choose())
+  assign("molecules", molec, envir=.GlobalEnv)
+  qsar.descriptors.func <- eval.desc(molecules, cdk.electronic);
+  assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == protein){
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+  molec <- load.molecules(file.choose())
+  assign("molecules", molec, envir=.GlobalEnv)
+  qsar.descriptors.func <- eval.desc(molecules, cdk.protein);
+  assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == topological){;
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+  molec <- load.molecules(file.choose())
+  assign("molecules", molec, envir=.GlobalEnv)
+  qsar.descriptors.func <- eval.desc(molecules, cdk.topological);
+  assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == geometrical){;
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+                                  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+                                  molec <- load.molecules(file.choose())
+                                  assign("molecules", molec, envir=.GlobalEnv)
+                                  qsar.descriptors.func <- eval.desc(molecules, cdk.topological);
+                                  assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == constitutional){;
+                                     qsar.activity <- read.csv(file.choose(),sep = ",", header=TRUE);
+} else if ((qsar) == constitutional){;
+                                     qsar.activity <- read.csv(file.choose(),sep = ",", header=TRUE);
+} else if ((qsar) == hybrid){
+  molecules <- load.molecules(file.choose())
+  qsar.descriptors <- eval.desc(molecules, cdk.hybrid)
+} else {      
+  print="Empity Model"
+}         
+}
+}

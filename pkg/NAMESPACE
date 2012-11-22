@@ -1,4 +1,2 @@
 exportPattern("^[[:alpha:]]+")
 import("caret","rcdk","ggplot2", "pROC", "chemometrics", "doMC", "odfWeave")
-export(
-)
