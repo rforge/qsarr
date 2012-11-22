@@ -1,5 +1,4 @@
 ###########Loading all necessary libraries###########
-library(rcdk)
 descriptors <- get.desc.categories()
 ###########Generating 2D CDK descriptors###########
 cdk.2d <- {

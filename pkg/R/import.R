@@ -1,4 +1,3 @@
-source('R/cdk.R', echo=TRUE)
 #import variable dragon
 dragon <- 4
 electronic <- 5
@@ -10,8 +9,8 @@ hybrid <- 10
 
 import <- function(qsar=11 , ... ){
 {if ((qsar) == 2) {; 
-                   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
-                   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
   molec <- load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
   qsar.descriptors.func <- eval.desc(molecules, cdk.2d);
