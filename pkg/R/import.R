@@ -70,8 +70,12 @@ import <- function(qsar=11 , ... ){
   qsar.descriptors.func <- eval.desc(molecules, cdk.constitutional);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == hybrid){
-  molecules <- load.molecules(file.choose())
-  qsar.descriptors <- eval.desc(molecules, cdk.hybrid)
+  qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
+  assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
+  molec <- load.molecules(file.choose())
+  assign("molecules", molec, envir=.GlobalEnv)
+  qsar.descriptors.func <- eval.desc(molecules, cdk.hybrid);
+  assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else {      
   print="Empity Model"
 }         
