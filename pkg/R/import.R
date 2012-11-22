@@ -82,17 +82,3 @@ import <- function(qsar=11 , ... ){
 }
 }
 
-qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
-assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-smiles <- read.csv(file.choose(),sep = ",", header=FALSE)
-assign("molecules", molec, envir=.GlobalEnv)
-molec <- load.molecules(file.choose())
-options("java.parameters"=c("-Xmx4000m"))
-library(rcdk)
-for (smile in smiles) {
-  m <- parse.smiles(smiles)
-  ## perform operations on this molecule
-  
-  jcall("java/lang/System","V","gc")
-  gc()
-}
