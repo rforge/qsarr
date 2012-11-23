@@ -13,16 +13,16 @@ cdk()
 {if ((qsar) == 2) {; 
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.2d);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.2d);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == 3){;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.3d);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.3d);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv) 
 } else if ((qsar) == (dragon)) {;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
@@ -32,51 +32,51 @@ cdk()
 } else if ((qsar) == electronic){
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.electronic);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.electronic);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == protein){
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.protein);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.protein);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == topological){;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.topological);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.topological);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == geometrical){;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.geometrical);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.geometrical);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == constitutional){;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.constitutional);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.constitutional);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == constitutional){;
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.constitutional);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.constitutional);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else if ((qsar) == hybrid){
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
-  molec <- load.molecules(file.choose())
+  molec <- rcdk::load.molecules(file.choose())
   assign("molecules", molec, envir=.GlobalEnv)
-  qsar.descriptors.func <- eval.desc(molecules, cdk.hybrid);
+  qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.hybrid);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
 } else {      
   print="Empity Model"
