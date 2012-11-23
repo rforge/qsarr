@@ -5,7 +5,7 @@ clean <- function(data = qsar.descriptors, ... ){
   assign("nzv", nzv.func, envir=.GlobalEnv)
   if (length(nzv > 1) != 0)  { 
     # Remove Zero variance
-    nzv.func <- nearZeroVar(qsar.descriptors.na)
+    nzv.func <- caret::nearZeroVar(qsar.descriptors.na)
     assign("nzv.func", nzv.func, envir=.GlobalEnv)
     qsar.descriptors.nzv.func <- qsar.descriptors.na[, -nzv]
     assign("qsar.descriptors.nzv", qsar.descriptors.nzv.func, envir=.GlobalEnv)
