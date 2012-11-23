@@ -1,4 +1,4 @@
-#import variable dragon
+#export some useful variables
 dragon <- 4
 electronic <- 5
 protein <- 6
@@ -6,7 +6,7 @@ topological <- 7
 geometrical <- 8
 constitutional <- 9
 hybrid <- 10
-
+#import function
 import <- function(qsar=11 , ... ){
 library(rcdk)
 cdk()
