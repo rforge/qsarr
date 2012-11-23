@@ -1,4 +1,4 @@
 # Export all names
 exportPattern(".")
 importFrom(stats, prcomp)
-import("caret","ggplot2", "pROC", "chemometrics", "doMC", "odfWeave", "lattice")
+import("caret","ggplot2", "pROC", "chemometrics", "doMC", "odfWeave", "lattice", "e1071", "multicore")

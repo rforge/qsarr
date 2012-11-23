@@ -2,9 +2,11 @@
 #carrega bibliotecas necessárias
 
 
-qsar.workflow <- function(cores=2,qsar, ... ){
+qsar.workflow <- function(cores=2,qsar,type=random, prop=0.75, ... ){
   cdk()
   doMC::registerDoMC(cores)
   import(qsar)
   clean()
+  split(type, prop)
+  models()
 }
