@@ -4,7 +4,7 @@
 
 qsar.workflow <- function(cores=2,qsar, ... ){
   cdk()
-  registerDoMC(cores)
+  doMC::registerDoMC(cores)
   import(qsar)
   clean()
 }
