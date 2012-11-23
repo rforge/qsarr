@@ -8,6 +8,8 @@ constitutional <- 9
 hybrid <- 10
 
 import <- function(qsar=11 , ... ){
+library(rcdk)
+cdk()
 {if ((qsar) == 2) {; 
   qsar.activity.func <- read.csv(file.choose(),sep = ",", header=TRUE)
   assign("qsar.activity", qsar.activity.func, envir=.GlobalEnv)
