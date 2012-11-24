@@ -12,4 +12,6 @@ qsar.workflow <- function(cores=2,qsar,type=random, prop=0.75, ... ){
   clean()
   split(type, prop)
   models()
+  metrics()
+  odfWeave("template-report.odt", "report.odt")
 }
