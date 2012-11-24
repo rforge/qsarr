@@ -8,11 +8,11 @@ qsaR in R - A flexible framework for working with QSAR and QSPR in R
 \description{
 Quantitative Structure Activity Relationships (QSARs) are mathematical models that are used to predict measures of biological response from physical characteristics of the structure of chemicals (known as molecular descriptors).
 The package it’s goanna contain tools for:
-•  data splitting
-•	pre-processing 
-•  model tuning using resampling
-•  variable importance estimation
-•  Automated results report
+data splitting
+pre-processing 
+model tuning using resampling
+variable importance estimation
+Automated results report
 
 as well as other functionality.
 
