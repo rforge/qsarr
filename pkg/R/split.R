@@ -7,6 +7,7 @@ split <- function(type=random,prop=0.75, ... ){
   set.seed(3456)
   TrainIndex.func <- caret::createDataPartition(unlist(qsar.activity), p=prop, list= FALSE, times = 1)
   assign("TrainIndex", TrainIndex.func, envir=.GlobalEnv)
+  environment(myVal) = globalenv(TrainIndex)
   Train.activity.func <- qsar.activity[TrainIndex, ]
   assign("Train.activity", Train.activity.func, envir=.GlobalEnv)
   training.func <- qsar.descriptors.cor[TrainIndex, ]
