@@ -3,6 +3,7 @@ random <- 1
 ks <- 2
 ##
 split <- function(type=random,prop=0.75, ... ){
+library(caret)
 {if ((type) == random) { 
   set.seed(3456)
   TrainIndex.func <- caret::createDataPartition(unlist(qsar.activity), p=prop, list= FALSE, times = 1)

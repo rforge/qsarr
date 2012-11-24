@@ -1,4 +1,5 @@
 clean <- function(data = qsar.descriptors, ... ){
+  library(caret)
   qsar.descriptors.na.func <- subset(data, select=colMeans(is.na(qsar.descriptors)) == 0)
   assign("qsar.descriptors.na", qsar.descriptors.na.func, envir=.GlobalEnv)
   nzv.func <- caret::nearZeroVar(qsar.descriptors.na)
