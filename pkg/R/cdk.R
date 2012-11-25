@@ -1,10 +1,10 @@
 cdk <- function(data = cdk, ... ){
   ###########Loading all necessary libraries###########
   library(rcdk)
-  descriptors.func <- get.desc.categories() 
-  assign("descriptors", descriptors.func, envir=.GlobalEnv)
+  descriptors <- get.desc.categories() 
+  .GlobalEnv[["descriptors"]] <- descriptors
   ###########Generating 2D CDK descriptors###########
-  cdk.2d.func <- {
+  cdk.2d <- {
     c("org.openscience.cdk.qsar.descriptors.molecular.AutocorrelationDescriptorCharge",        
       "org.openscience.cdk.qsar.descriptors.molecular.AutocorrelationDescriptorMass",         
       "org.openscience.cdk.qsar.descriptors.molecular.AutocorrelationDescriptorPolarizability",
@@ -50,11 +50,10 @@ cdk <- function(data = cdk, ... ){
       "org.openscience.cdk.qsar.descriptors.molecular.CPSADescriptor",              
       "org.openscience.cdk.qsar.descriptors.molecular.HBondAcceptorCountDescriptor",
       "org.openscience.cdk.qsar.descriptors.molecular.HBondDonorCountDescriptor",   
-      "org.openscience.cdk.qsar.descriptors.molecular.TPSADescriptor")
-  }
-  assign("cdk.2d", cdk.2d.func, envir=.GlobalEnv)
+      "org.openscience.cdk.qsar.descriptors.molecular.TPSADescriptor")}
+  .GlobalEnv[["cdk.2d"]] <- cdk.2d
   ###########Generating 3D CDK descriptors###########
-  cdk.3d.func <- {
+  cdk.3d <- {
     c("org.openscience.cdk.qsar.descriptors.molecular.CPSADescriptor",
       "org.openscience.cdk.qsar.descriptors.molecular.GravitationalIndexDescriptor",
       "org.openscience.cdk.qsar.descriptors.molecular.LengthOverBreadthDescriptor",
@@ -62,23 +61,23 @@ cdk <- function(data = cdk, ... ){
       "org.openscience.cdk.qsar.descriptors.molecular.PetitjeanShapeIndexDescriptor",
       "org.openscience.cdk.qsar.descriptors.molecular.WHIMDescriptor")
   }
-  assign("cdk.3d", cdk.3d.func , envir=.GlobalEnv)
+  .GlobalEnv[["cdk.3d"]] <- cdk.3d
   ###########Generating CDK electronic descriptors###########
-  cdk.electronic.func <- get.desc.names(descriptors[1])
-  assign("cdk.electronic", cdk.electronic.func, envir=.GlobalEnv)
+  cdk.electronic <- get.desc.names(descriptors[1])
+  .GlobalEnv[["cdk.electronic"]] <- cdk.electronic
   ###########Generating CDK protein descriptors###########
-  cdk.protein.func <- get.desc.names(descriptors[2])
-  assign("cdk.protein", cdk.protein.func, envir=.GlobalEnv)
+  cdk.protein <- get.desc.names(descriptors[2])
+  .GlobalEnv[["cdk.protein"]] <- cdk.protein 
   ###########Generating CDK topological descriptors###########
-  cdk.topological.func <- get.desc.names(descriptors[3])
-  assign("cdk.topological", cdk.topological.func, envir=.GlobalEnv)
+  cdk.topological <- get.desc.names(descriptors[3])
+  .GlobalEnv[["cdk.topological"]] <- cdk.topological
   ###########Generating CDK geometrical descriptors###########
-  cdk.geometrical.func <- get.desc.names(descriptors[4])
-  assign("cdk.geometrical", cdk.geometrical.func, envir=.GlobalEnv)
+  cdk.geometrical <- get.desc.names(descriptors[4])
+  .GlobalEnv[["cdk.geometrical"]] <- cdk.geometrical
   ###########Generating CDK constitutional descriptors###########
-  cdk.constitutional.func <- get.desc.names(descriptors[5])
-  assign("cdk.constitutional", cdk.constitutional.func, envir=.GlobalEnv)
+  cdk.constitutional <- get.desc.names(descriptors[5])
+  .GlobalEnv[["cdk.constitutional"]] <- cdk.constitutional
   ###########Generating CDK hybrid descriptors###########
-  cdk.hybrid.func <- get.desc.names(descriptors[6])
-  assign("cdk.hybrid", cdk.hybrid.func, envir=.GlobalEnv)
+  cdk.hybrid <- get.desc.names(descriptors[6])
+  .GlobalEnv[["cdk.hybrid "]] <- cdk.hybrid 
 } 
