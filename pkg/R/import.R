@@ -6,8 +6,9 @@ topological <- 7
 geometrical <- 8
 constitutional <- 9
 hybrid <- 10
+data <-11
 #import function
-import <- function(qsar=11 , ... ){
+import <- function(qsar=11 , activ=NULL, descrip=NULL, ... ){
 library(rcdk)
 cdk()
 {if ((qsar) == 2) {; 
@@ -78,9 +79,14 @@ cdk()
   assign("molecules", molec, envir=.GlobalEnv)
   qsar.descriptors.func <- rcdk::eval.desc(molecules, cdk.hybrid);
   assign("qsar.descriptors", qsar.descriptors.func, envir=.GlobalEnv)
+} else if ((qsar) == data){
+  qsar.activity <- activ
+  qsar.activity <- as.data.frame(qsar.activity)
+  .GlobalEnv[["qsar.activity"]] <- qsar.activity
+  qsar.descriptors <- descrip
+  .GlobalEnv[["qsar.descriptors"]] <- qsar.descriptors
 } else {      
-  print="Empity Model"
+  print="ERROR to IMPORT"
 }         
 }
 }
-
