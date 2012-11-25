@@ -3,9 +3,12 @@ Type: Package
 Title: qsaR in R - A flexible framework for working with QSAR and QSPR in R
 Version: 1.0
 Date: 2012-11-20
-Author: Rodolpho C. Braga, with contributions from Carolina H. Andrade.
+Authors@R: c(person("Rodolpho C. Braga", "Developer", role = c("aut", "cre"),
+                          email = "rodolpho.braga@icloud.com"),
+                   person("Carolina H. Andrade", "Developer", role = c("ctb", "cph"), email = "carolina@farmacia.ufg.br"))     
+Author: Rodolpho C. Braga, with contributions from Carolina H. Andrade
 Maintainer: Rodolpho C. Braga <rodolpho.braga@icloud.com>
-Depends: R (>= 2.10), caret, odfWeave, doMC, ggplot2
+Depends: R (>= 2.10), caret, odfWeave, ggplot2
 Description: This project aims at building a flexible framework for working with QSAR in R. 
 License: BSD
 URL: http://qsarr.r-forge.r-project.org
