@@ -2,9 +2,9 @@
 random <- 1
 ks <- 2
 ##
-split <- function(type=random,prop=0.75, ... ){
+split <- function(split=random,prop=0.75, ... ){
 library(caret)
-{if ((type) == random) { 
+{if ((split) == random) { 
   set.seed(3456)
   TrainIndex.func <- caret::createDataPartition(unlist(qsar.activity), p=prop, list= FALSE, times = 1)
   assign("TrainIndex", TrainIndex.func, envir=.GlobalEnv)
@@ -22,7 +22,7 @@ library(caret)
   assign("Train.descriptors", Train.descriptors.func, envir=.GlobalEnv)
   Test.descriptors.func <- stats::predict(preProcValues, test)
   assign("Test.descriptors", Test.descriptors.func, envir=.GlobalEnv)
-} else if ((type) == ks){
+} else if ((split) == ks){
   TrainIndex.func <- caret::createDataPartition(unlist(qsar.activity), p=prop, list= FALSE, times = 1)
   assign("TrainIndex", TrainIndex.func, envir=.GlobalEnv)
   Train.activity.func <- qsar.activity[TrainIndex, ]
