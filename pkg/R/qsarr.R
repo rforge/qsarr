@@ -3,9 +3,6 @@
 
 qsar.workflow <- function(cores=2,qsar,type=random, prop=0.75, ... ){
   library(doMC)
-  library(caret)
-  library(ggplot2)
-  library(odfWeave)
   cdk()
   doMC::registerDoMC(cores)
   import(qsar)

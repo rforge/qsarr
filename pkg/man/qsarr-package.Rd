@@ -45,5 +45,6 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
-
+data(cox2)
+import(data,cox2IC50,cox2Descr)
 }
