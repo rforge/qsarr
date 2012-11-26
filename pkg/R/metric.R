@@ -281,9 +281,9 @@ average.rm2.overall.en <- average.rm2(predVals.en$obs,predVals.en$pred)
 ###########Calculating the Delta rm2 value for the OVERALL dataset###########
 delta.rm2.overall.en <- delta.rm2(predVals.en$obs,predVals.en$pred)
 ##
-M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls,delta.rm2.test.pls,R2.earth,Q2.earth,RMSEC.earth,RMSECV.earth,RMSEP.earth,R2.pred.earth,average.rm2.test.earth,delta.rm2.test.earth,R2.knn,Q2.knn,RMSEC.knn,RMSECV.knn,RMSEP.knn,R2.pred.knn,average.rm2.test.knn,delta.rm2.test.knn,R2.rf,Q2.rf,RMSEC.rf,RMSECV.rf,RMSEP.rf,R2.pred.rf,average.rm2.test.rf,delta.rm2.test.rf,R2.svm,Q2.svm,RMSEC.svm,RMSECV.svm,RMSEP.svm,R2.pred.svm,average.rm2.test.rf,delta.rm2.test.rf,R2.en,Q2.en,RMSEC.en,RMSECV.en,RMSEP.en,R2.pred.en,average.rm2.test.en,delta.rm2.test.en),byrow=TRUE,ncol=8))
-colnames(M$Metrics) <- c("r2","q2","RMSEC","RMSEcv","RMSEP", "r2pred", "Average rm2", "Delta rm2")
-rownames(M$Metrics) <- c("pls","mars", "knn", "rf", "svm","Elastic Net")
+M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls),byrow=TRUE,ncol=6))
+#colnames(M$Metrics) <- c("r2","q2","RMSEC","RMSEcv","RMSEP", "r2pred")
+#rownames(M$Metrics) <- c("pls")
 M$Metrics <- round(M$Metrics,digits=3)
 #
 M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls,delta.rm2.test.pls,R2.earth,Q2.earth,RMSEC.earth,RMSECV.earth,RMSEP.earth,R2.pred.earth,average.rm2.test.earth,delta.rm2.test.earth,R2.knn,Q2.knn,RMSEC.knn,RMSECV.knn,RMSEP.knn,R2.pred.knn,average.rm2.test.knn,delta.rm2.test.knn,R2.rf,Q2.rf,RMSEC.rf,RMSECV.rf,RMSEP.rf,R2.pred.rf,average.rm2.test.rf,delta.rm2.test.rf,R2.svm,Q2.svm,RMSEC.svm,RMSECV.svm,RMSEP.svm,R2.pred.svm,average.rm2.test.rf,delta.rm2.test.rf,R2.en,Q2.en,RMSEC.en,RMSECV.en,RMSEP.en,R2.pred.en,average.rm2.test.en,delta.rm2.test.en),byrow=TRUE,ncol=8))
