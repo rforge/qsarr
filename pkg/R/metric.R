@@ -61,7 +61,7 @@ parameter2.earth <- CV.earth$nprune
 RMSECV.earth <- CV.earth$RMSE
 RMSEP.earth <- sqrt(mean(residuo.test.earth^2))
 Q2.earth <- CV.earth$Rsquared
-R2.pred.earth <- 1-(sum((predVals.earth$obs-predVals.earth$pred)^2))/(sum(((predVals.earth$obs-mean(predVals.earth$obs))^2)))
+R2.pred.earth <- qsarm::r2pred(predVals.earth$obs,predVals.earth$pred)
 ###########Calculating the rm2 value for the TRAIN dataset###########
 rm2.train.earth <-  qsarm::rm2(earth.train$obs,earth.train$pred)
 ###########Calculating the reverse rm2 value for the TRAIN dataset###########
@@ -101,7 +101,7 @@ CV.knn <- knnFit$results[which.min(knnFit$results[,2] ), ]
 RMSECV.knn <- CV.knn$RMSE
 RMSEP.knn <- sqrt(mean(residuo.test.knn^2))
 Q2.knn <- CV.knn$Rsquared
-R2.pred.knn <- 1-(sum((predVals.knn$obs-predVals.knn$pred)^2))/(sum(((predVals.knn$obs-mean(predVals.knn$obs))^2)))
+R2.pred.knn <- qsarm::r2pred(predVals.knn$obs,predVals.knn$pred)
 ###########Calculating the rm2 value for the TRAIN dataset###########
 rm2.train.knn <-  qsarm::rm2(knn.train$obs,knn.train$pred)
 ###########Calculating the reverse rm2 value for the TRAIN dataset###########
@@ -139,7 +139,7 @@ CV.rf <- rfFit$results[which.min(rfFit$results[,1] ), ]
 RMSECV.rf <- CV.rf$RMSE
 RMSEP.rf <- sqrt(mean(residuo.test.rf^2))
 Q2.rf <- CV.rf$Rsquared
-R2.pred.rf <- 1-(sum((predVals.rf$obs-predVals.rf$pred)^2))/(sum(((predVals.rf$obs-mean(predVals.rf$obs))^2)))
+R2.pred.rf <- qsarm::r2pred(predVals.rf$obs,predVals.rf$pred)
 ###########Calculating the rm2 value for the TRAIN dataset###########
 rm2.train.rf <-  qsarm::rm2(rf.train$obs,rf.train$pred)
 ###########Calculating the reverse rm2 value for the TRAIN dataset###########
@@ -164,85 +164,6 @@ rm2.reverse.overall.rf <-  qsarm::rm2.reverse(predVals.rf$obs,predVals.rf$pred)
 average.rm2.overall.rf <- qsarm::average.rm2(predVals.rf$obs,predVals.rf$pred)
 ###########Calculating the Delta rm2 value for the OVERALL dataset###########
 delta.rm2.overall.rf <- qsarm::delta.rm2(predVals.rf$obs,predVals.rf$pred)
-#Support Vector Machine
-svm.train <- subset(predVals.svm, dataType == "Training")
-svm.test <- subset(predVals.svm, dataType == "Test")
-residuo.train.svm <- (svm.train$obs - svm.train$pred)
-residuo.test.svm <- (svm.test$obs - svm.test$pred)
-residuo.total.svm <- (predVals.svm$obs - predVals.svm$pred)
-R2.svm.summary <- summary(lm(svm.train$pred ~ svm.train$obs))
-R2.svm <- R2.svm.summary$r.squared
-RMSEC.svm <- sqrt(mean(residuo.train.svm^2))
-CV.svm <- svmFit$results[which.min(svmFit$results[,2] ), ]
-RMSECV.svm <- CV.svm$RMSE
-RMSEP.svm <- sqrt(mean(residuo.test.svm^2))
-Q2.svm <- CV.svm$Rsquared
-R2.pred.svm <- 1-(sum((predVals.svm$obs-predVals.svm$pred)^2))/(sum(((predVals.svm$obs-mean(predVals.svm$obs))^2)))
-###########Calculating the rm2 value for the TRAIN dataset###########
-rm2.train.svm <-  qsarm::rm2(svm.train$obs,svm.train$pred)
-###########Calculating the reverse rm2 value for the TRAIN dataset###########
-rm2.reverse.train.svm <-  qsarm::rm2.reverse(svm.train$obs,svm.train$pred)
-###########Calculating the Average rm2 value for the TRAIN dataset###########
-average.rm2.train.svm <- qsarm::average.rm2(svm.train$obs,svm.train$pred)
-###########Calculating the Delta rm2 value for the TRAIN dataset###########
-delta.rm2.train.svm <- qsarm::delta.rm2(svm.train$obs,svm.train$pred)
-###########Calculating the rm2 value for the TEST dataset###########
-rm2.test.svm <-  qsarm::rm2(svm.test$obs,svm.test$pred)
-###########Calculating the reverse rm2 value for the TEST dataset###########
-rm2.reverse.test.svm <-  qsarm::rm2.reverse(svm.test$obs,svm.test$pred)
-###########Calculating the Average rm2 value for the TEST dataset###########
-average.rm2.test.svm <- qsarm::average.rm2(svm.test$obs,svm.test$pred)
-###########Calculating the Delta rm2 value for the TEST dataset###########
-delta.rm2.test.svm <- qsarm::delta.rm2(svm.test$obs,svm.test$pred)
-###########Calculating the rm2 value for the OVERALL dataset###########
-rm2.overall.svm <-  qsarm::rm2(predVals.svm$obs,predVals.svm$pred)
-###########Calculating the reverse rm2 value for the OVERALL dataset###########
-rm2.reverse.overall.svm <-  qsarm::rm2.reverse(predVals.svm$obs,predVals.svm$pred)
-###########Calculating the Average rm2 value for the OVERALL dataset###########
-average.rm2.overall.svm <- qsarm::average.rm2(predVals.svm$obs,predVals.svm$pred)
-###########Calculating the Delta rm2 value for the OVERALL dataset###########
-delta.rm2.overall.svm <- qsarm::delta.rm2(predVals.svm$obs,predVals.svm$pred)
-#Elastic Net
-###############################################################
-###########Calculating Metric for Elastic Net model############
-###############################################################      
-en.train <- subset(predVals.en, dataType == "Training")
-en.test <- subset(predVals.en, dataType == "Test")
-residuo.train.en <- (en.train$obs - en.train$pred)
-residuo.test.en <- (en.test$obs - en.test$pred)
-residuo.total.en <- (predVals.en$obs - predVals.en$pred)
-R2.en.summary <- summary(lm(en.train$pred ~ en.train$obs))
-R2.en <- R2.en.summary$r.squared
-RMSEC.en <- sqrt(mean(residuo.train.en^2))
-CV.en <- enFit$results[which.min(enFit$results[,3] ), ]
-RMSECV.en <- CV.en$RMSE
-RMSEP.en <- sqrt(mean(residuo.test.en^2))
-Q2.en <- CV.en$Rsquared
-R2.pred.en <- 1-(sum((predVals.en$obs-predVals.en$pred)^2))/(sum(((predVals.en$obs-mean(predVals.en$obs))^2)))
-###########Calculating the rm2 value for the TRAIN dataset###########
-rm2.train.en<-  qsarm::rm2(en.train$obs,en.train$pred)
-###########Calculating the reverse rm2 value for the TRAIN dataset###########
-rm2.reverse.train.en <-  qsarm::rm2.reverse(en.train$obs,en.train$pred)
-###########Calculating the Average rm2 value for the TRAIN dataset###########
-average.rm2.train.en <- qsarm::average.rm2(en.train$obs,en.train$pred)
-###########Calculating the Delta rm2 value for the TRAIN dataset###########
-delta.rm2.train.en <- qsarm::delta.rm2(en.train$obs,en.train$pred)
-###########Calculating the rm2 value for the TEST dataset###########
-rm2.test.en <-  qsarm::rm2(en.test$obs,en.test$pred)
-###########Calculating the reverse rm2 value for the TEST dataset###########
-rm2.reverse.test.en <-  qsarm::rm2.reverse(en.test$obs,en.test$pred)
-###########Calculating the Average rm2 value for the TEST dataset###########
-average.rm2.test.en <- qsarm::average.rm2(en.test$obs,en.test$pred)
-###########Calculating the Delta rm2 value for the TEST dataset###########
-delta.rm2.test.en <- qsarm::delta.rm2(en.test$obs,en.test$pred)
-###########Calculating the rm2 value for the OVERALL dataset###########
-rm2.overall.en <-  qsarm::rm2(predVals.en$obs,predVals.en$pred)
-###########Calculating the reverse rm2 value for the OVERALL dataset###########
-rm2.reverse.overall.en <-  qsarm::rm2.reverse(predVals.en$obs,predVals.en$pred)
-###########Calculating the Average rm2 value for the OVERALL dataset###########
-average.rm2.overall.en <- qsarm::average.rm2(predVals.en$obs,predVals.en$pred)
-###########Calculating the Delta rm2 value for the OVERALL dataset###########
-delta.rm2.overall.en <- qsarm::delta.rm2(predVals.en$obs,predVals.en$pred)
 ##
 M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls),byrow=TRUE,ncol=6))
 #colnames(M$Metrics) <- c("r2","q2","RMSEC","RMSEcv","RMSEP", "r2pred")
