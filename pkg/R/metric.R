@@ -19,7 +19,7 @@ parameters.pls <- CV.pls$ncomp
 RMSECV.pls <- CV.pls$RMSE
 RMSEP.pls <- sqrt(mean(residuo.test.pls^2))
 Q2.pls <- CV.pls$Rsquared
-R2.pred.pls <- 1-(sum((predVals.pls$obs-predVals.pls$pred)^2))/(sum(((predVals.pls$obs-mean(predVals.pls$obs))^2)))               
+R2.pred.pls <- qsarm::r2pred(predVals.pls$obs,predVals.pls$pred)
 ###########Calculating the rm2 value for the TRAIN dataset###########
 rm2.train.pls <- qsarm::rm2(pls.train$obs,pls.train$pred)
 ###########Calculating the reverse rm2 value for the TRAIN dataset###########
