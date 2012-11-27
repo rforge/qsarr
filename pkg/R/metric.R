@@ -1,45 +1,6 @@
-#################################
 #######################################################
-###########Loading all qsaR functions##################
+###########Loading all Metric functions################
 #######################################################
-#################################
-
-#################################
-#######################################################
-###########Loading all Metric functions###########
-#######################################################
-#################################
-R2 <- function(y, equation, ... ){
-  1 - (sum((y-predict(equation))^2)/sum((y-mean(y))^2))
-}
-rm2 <- function(y, x, ... ){  
-  if ((R2(y,(lm(y ~ x)))) > R2(y,(lm(y ~ -1 + x)))) { 
-    print(R2(y,(lm(y ~ x)))*( 1-(sqrt(R2(y,(lm(y ~ x)))-R2(y,(lm(y ~ -1 + x)))))))
-  } else { 
-    print(R2(y,(lm(y ~ x))))
-  } 
-}
-rm2.reverse <- function(y, x, ... ){
-  print(R2(x,(lm(x ~ y)))*( 1-(sqrt(R2(x,(lm(x ~ y)))-R2(x,(lm(x ~ -1 + y)))))))
-}
-average.rm2 <- function(y, x, ... ){
-  if ((R2(y,(lm(y ~ x)))) > R2(y,(lm(y ~ -1 + x)))) {
-    print(((R2(y,(lm(y ~ x)))*( 1-(sqrt(R2(y,(lm(y ~ x)))-R2(y,(lm(y ~ -1 + x))))))+ R2(x,(lm(x ~ y)))*( 1-(sqrt(R2(x,(lm(x ~ y)))-R2(x,(lm(x ~ -1 + y))))))))/2)
-  } else { 
-    print(((R2(y,(lm(y ~ x))))  + (R2(x,(lm(x ~ y)))*( 1-(sqrt(R2(x,(lm(x ~ y)))-R2(x,(lm(x ~ -1 + y)))))))  )/2)
-  }
-}
-delta.rm2 <- function(y, x, ... ){
-  if ((R2(y,(lm(y ~ x)))) > R2(y,(lm(y ~ -1 + x)))) {
-    print(abs((R2(y,(lm(y ~ x)))*( 1-(sqrt(R2(y,(lm(y ~ x)))-R2(y,(lm(y ~ -1 + x))))))  -  R2(x,(lm(x ~ y)))*( 1-(sqrt(R2(x,(lm(x ~ y)))-R2(x,(lm(x ~ -1 + y)))))))))
-  } else { 
-    print(abs((R2(y,(lm(y ~ x)))) - (R2(x,(lm(x ~ y)))*( 1-(sqrt(R2(x,(lm(x ~ y)))-R2(x,(lm(x ~ -1 + y)))))))  ))
-  }
-}
-
-
-
-
 metrics <- function(type=small, ...){
 {if ((type) == small) {
 #######################################################
@@ -95,6 +56,8 @@ R2.earth.summary <- summary(lm(earth.train$pred ~ earth.train$obs))
 R2.earth <- R2.earth.summary$r.squared
 RMSEC.earth <- sqrt(mean(residuo.train.earth^2))
 CV.earth <- earthFit$results[which.min(earthFit$results[,3] ), ]
+parameter1.earth <- CV.earth$degree
+parameter2.earth <- CV.earth$nprune
 RMSECV.earth <- CV.earth$RMSE
 RMSEP.earth <- sqrt(mean(residuo.test.earth^2))
 Q2.earth <- CV.earth$Rsquared
@@ -285,6 +248,10 @@ M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.
 #colnames(M$Metrics) <- c("r2","q2","RMSEC","RMSEcv","RMSEP", "r2pred")
 #rownames(M$Metrics) <- c("pls")
 M$Metrics <- round(M$Metrics,digits=3)
+
+Mdata <- list(Mdata=matrix(c(parameters.pls, "-", parameter1.earth,parameter2.earth),byrow=TRUE,ncol=2))
+Mdata$Mdata <- round(Mdata$Mdata,digits=0.1)
+
 #
 M <- list(Metrics=matrix(c(R2.pls,Q2.pls,RMSEC.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls,delta.rm2.test.pls,R2.earth,Q2.earth,RMSEC.earth,RMSECV.earth,RMSEP.earth,R2.pred.earth,average.rm2.test.earth,delta.rm2.test.earth,R2.knn,Q2.knn,RMSEC.knn,RMSECV.knn,RMSEP.knn,R2.pred.knn,average.rm2.test.knn,delta.rm2.test.knn,R2.rf,Q2.rf,RMSEC.rf,RMSECV.rf,RMSEP.rf,R2.pred.rf,average.rm2.test.rf,delta.rm2.test.rf,R2.svm,Q2.svm,RMSEC.svm,RMSECV.svm,RMSEP.svm,R2.pred.svm,average.rm2.test.rf,delta.rm2.test.rf,R2.en,Q2.en,RMSEC.en,RMSECV.en,RMSEP.en,R2.pred.en,average.rm2.test.en,delta.rm2.test.en),byrow=TRUE,ncol=8))
 colnames(M$Metrics) <- c("r2","q2","RMSEC","RMSEcv","RMSEP", "r2pred", "Average rm2", "Delta rm2")
