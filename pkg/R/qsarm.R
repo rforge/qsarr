@@ -35,3 +35,7 @@ delta.rm2 <- function(y, x, ... ){
     print(abs((r2(y,(lm(y ~ x)))) - (r2(x,(lm(x ~ y)))*( 1-(sqrt(r2(x,(lm(x ~ y)))-r2(x,(lm(x ~ -1 + y)))))))  ))
   }
 }
+
+Q2f3 <- function(y,x, ytrain,nex, ntrain, ... ){
+  1- ((sum(y-x)^2)/nex) / ((sum(((y-mean(ytrain))^2)))/ntrain)
+}
