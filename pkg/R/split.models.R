@@ -23,8 +23,14 @@ library(caret)
   Test.descriptors.func <- stats::predict(preProcValues, test)
   assign("Test.descriptors", Test.descriptors.func, envir=.GlobalEnv)
 } else if ((split) == ks){
-  TrainIndex.func <- caret::createDataPartition(unlist(qsar.activity), p=prop, list= FALSE, times = 1)
-  assign("TrainIndex", TrainIndex.func, envir=.GlobalEnv)
+  pca.desc <-  prcomp(qsar.descriptors.cor)
+  .GlobalEnv[["pca.desc"]] <- pca.desc
+  kvalue <- prop*nrow(qsar.descriptors.cor)
+  .GlobalEnv[["kvalue"]] <- kvalue
+  kennardStone.desc <- kennardStone(pca.desc$x, profN = NULL, k =kvalue , distance = "MD", StartCenter = TRUE)
+  .GlobalEnv[["kennardStone.desc"]] <- kennardStone.desc
+  TrainIndex <- kennardStone.desc$cal
+  .GlobalEnv[["TrainIndex"]] <- TrainIndex
   Train.activity.func <- qsar.activity[TrainIndex, ]
   assign("Train.activity", Train.activity.func, envir=.GlobalEnv)
   training.func <- qsar.descriptors.cor[TrainIndex, ]
