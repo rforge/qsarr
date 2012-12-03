@@ -1,18 +1,10 @@
+#Thanks to Leonardo Ramirez and Antoine Stevens for these two functions (Mahalanobis distances and kennardStone)
 ## Created by: Leonardo Ramirez and Antoine Stevens
 ## 2012
 ## antoine.stevens@uclouvain.be
 ## leonardo.ramirez@uclouvain.be
 
 ## This function computes Mahalanobis distances for data matrices
-
-##Arguments:
-## x:       Spectral data matrix
-## x2:      An optional secodn data matrix. If it is provided then a n x m matrix
-##          of distances between the m objects in x2 and the n objects in x will be returned.
-## center:  logical indicating if x should be mean-centered
-## scale:   logical indicating if x should be scaled
-
-
 md <- function(x, x2=NULL, center = TRUE, scale = TRUE){
   
   if(length(x2) == 0){
@@ -142,7 +134,6 @@ kennardStone <- function(pcv, profN = NULL, k = NULL, distance = "MD", StartCent
     
   }
   close(pb)
-  message("Preparing report...")
   pc <- ncol(pcv)
   
   val <- nm[-KSs]
@@ -151,6 +142,5 @@ kennardStone <- function(pcv, profN = NULL, k = NULL, distance = "MD", StartCent
   if(length(profN)>0){
     rowN <- list(cal = sort(rowN$cal), val = sort(rowN$val))
   }
-  message("Done!")
   return(rowN)
 }
