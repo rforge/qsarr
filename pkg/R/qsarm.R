@@ -54,9 +54,9 @@ CCC <- function(ypred.test, yobs.test, nex, ... ){
 }
 
 RMSEP <- function(ypred.test, nex, ... ){
-  (sum((ypred.test-mean(ypred.test))^2)) / nex
+  sqrt((sum((ypred.test-mean(ypred.test))^2)) / nex)
 }
 
 RMSEC <- function(ypred.train, ntrain, ... ){
-  (sum((ypred.train-mean(ypred.train))^2)) / ntrain
+  sqrt((sum((ypred.train-mean(ypred.train))^2)) / ntrain)
 }
