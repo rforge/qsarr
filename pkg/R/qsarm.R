@@ -5,8 +5,8 @@ r2 <- function(y, equation, ... ){
   1 - (sum((y-predict(equation))^2)/sum((y-mean(y))^2))
 }
 #####
-r2pred <- function(ypred.test, yobs.test, yobs.train, ... ){
-  1-(sum((ypred.test-yobs.test)^2))/(sum( ((yobs.test-mean(yobs.train))^2) ))
+r2pred <- function(Ypred.test, Yobs.test, Yobs.training, ... ){
+  1-(sum((Ypred.test-Yobs.test)^2))/(sum( ((Yobs.test-mean(Yobs.training))^2) ))
 }
 #######################################################
 ###########Loading all rm2 Metric functions############
@@ -37,26 +37,31 @@ delta.rm2 <- function(y, x, ... ){
 }
 
 
-Q2f1 <- function(ypred.test, yobs.test, yobs.train, ... ){
-  1-(sum((ypred.test-yobs.test)^2))/(sum( ((yobs.test-mean(yobs.train))^2) ))
+Q2f1 <- function(Ypred.test, Yobs.test, Yobs.training, ... ){
+  1-(sum((Ypred.test-Yobs.test)^2))/(sum( ((Yobs.test-mean(Yobs.training))^2) ))
 }
 
-Q2f2 <- function(ypred.test, yobs.test, yobs.train, ... ){
-  1-(sum((ypred.test-yobs.test)^2))/(sum( ((yobs.test-mean(yobs.test))^2) ))
+Q2f2 <- function(Ypred.test, Yobs.test, Yobs.training, ... ){
+  1-(sum((Ypred.test-Yobs.test)^2))/(sum( ((Yobs.test-mean(Yobs.test))^2) ))
 }
 
-Q2f3 <- function(ypred.test, yobs.test,yobs.train, nex, ntrain, ... ){
-  1 - ((sum((ypred.test-yobs.test)^2))/nex) / ((sum((yobs.train-mean(yobs.train))^2) )/ntrain)
+Q2f3 <- function(Ypred.test, Yobs.test,Yobs.training, Ncompounds.test, Ncompounds.training, ... ){
+  1 - ((sum((Ypred.test-Yobs.test)^2))/Ncompounds.test) / ((sum((Yobs.training-mean(Yobs.training))^2) )/Ncompounds.training)
 }
 
-CCC <- function(ypred.test, yobs.test, nex, ... ){
-  (2*(sum((yobs.test-mean(yobs.test))*(ypred.test-mean(ypred.test)))))/( (sum(((yobs.test-mean(yobs.test))^2))) + (sum(((ypred.test-mean(ypred.test))^2))) +  (nex*(mean(yobs.test)-mean(ypred.test)^2))  )
+CCC <- function(Ypred.test, Yobs.test, Ncompounds.test, ... ){
+  (2*(sum((Yobs.test-mean(Yobs.test))*(Ypred.test-mean(Ypred.test)))))/( (sum(((Yobs.test-mean(Yobs.test))^2))) + (sum(((Ypred.test-mean(Ypred.test))^2))) +  (Ncompounds.test*(mean(Yobs.test)-mean(Ypred.test)^2))  )
 }
 
-RMSEP <- function(ypred.test, nex, ... ){
-  sqrt((sum((ypred.test-mean(ypred.test))^2)) / nex)
+
+RMSEP <- function(Yobs.test,Ypred.test, Ncompounds.test, ... ){
+  sqrt((sum((Ypred.test-Yobs.test)^2)) / Ncompounds.test)
 }
 
-RMSEC <- function(ypred.train, ntrain, ... ){
-  sqrt((sum((ypred.train-mean(ypred.train))^2)) / ntrain)
+RMSEC <- function(Yobs.traininging,Ypred.training, Ncompounds.training, ... ){
+  sqrt((sum((Ypred.training-Yobs.traininging)^2)) / Ncompounds.training)
+}
+
+MAE <- function(Yobs.test,Ypred.test, Ncompounds.test, ... ){
+  abs((sum(Ypred.test-Yobs.test)) / Ncompounds.test)
 }
