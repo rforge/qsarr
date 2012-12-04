@@ -12,14 +12,7 @@ md <- function(x, x2=NULL, center = TRUE, scale = TRUE){
   }else{
     if((nrow(x) + nrow(x2)) < ncol(x)) {stop("For Mahalanobis distance computations the nrow(x) + nrow(x2) must be hihgher tha the number of colunms")}
   }
-  
-  
-  if(length(find.package("matrixStats",quiet=TRUE))==0) 
-  if(!require("matrixStats")){require("matrixStats")}
-  
-  if(length(find.package("expm",quiet=TRUE))==0) 
-  if(!require("expm")){require("expm")}
-  
+
   
   if(length(x2) == 0){
     if(center == TRUE){
