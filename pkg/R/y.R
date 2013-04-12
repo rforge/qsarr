@@ -47,5 +47,5 @@ extract.q <- data.frame(sapply( 1:ncol( extract ),
                                   extract[,i]$Rsquared
                                 
 ))
-.GlobalEnv[["extract.q"]] <- extract.q
+.GlobalEnv[["extract.23"]] <- extract.q
 }

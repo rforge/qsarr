@@ -13,9 +13,9 @@ clean <- function(data = qsar.descriptors, ... ){
     # Remover correlação acima 90%
     descriptors.correlation.func <- cor(qsar.descriptors.nzv)
     assign("descriptors.correlation", descriptors.correlation.func, envir=.GlobalEnv)
-    descriptors.correlation.9.func <- caret::findCorrelation(descriptors.correlation, cutoff = .9)
-    assign("descriptors.correlation.9", descriptors.correlation.9.func, envir=.GlobalEnv)
-    qsar.descriptors.cor.func <- qsar.descriptors.nzv[,-descriptors.correlation.9]
+    descriptors.correlation.75.func <- caret::findCorrelation(descriptors.correlation, cutoff = .75)
+    assign("descriptors.correlation.75", descriptors.correlation.75.func, envir=.GlobalEnv)
+    qsar.descriptors.cor.func <- qsar.descriptors.nzv[,-descriptors.correlation.75]
     assign("qsar.descriptors.cor", qsar.descriptors.cor.func, envir=.GlobalEnv)
   } else { 
     qsar.descriptors.cor.func <- qsar.descriptors.na

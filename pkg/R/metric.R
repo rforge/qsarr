@@ -13,6 +13,25 @@ ntrain <- nrow(Train.descriptors)
 residuo.train.pls <- (pls.train$obs - pls.train$pred)
 residuo.test.pls <- (pls.test$obs - pls.test$pred)
 residuo.total.pls <- (predVals.pls$obs - predVals.pls$pred)
+################durbinWatsonTest##############
+dw.train.pls<-durbinWatsonTest(residuo.train.pls)
+dw.test.pls<-durbinWatsonTest(residuo.test.pls)
+dw.pls<-durbinWatsonTest(residuo.total.pls)
+################remover 3x maior vairaça##############
+sigma=(sum(((residuo.total.pls - mean(residuo.total.pls))^2)))/(ntrain+ntest)
+sigma=sqrt(sd(dados$pIC50))
+pls.remove.out<-residuo.test.pls[(abs(residuo.test.pls)< (3*sigma))]
+plsre=c(residuo.train.pls,pls.remove.out)
+durbinWatsonTest(plsre)
+###########Calculating the 95% CI for training##########
+res.95 <- count(abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
+res.95ci <- (res.95$freq[2])*100/nrow(pls.train)
+###########Calculating the 99% CI for testing##########
+res.99 <- count(abs(residuo.test.pls)< sd(residuo.test.pls))
+predictability<- (res.99$freq[2])*100/nrow(pls.test)
+####################################################
+pls.remove.out<-residuo.test.pls[(abs(residuo.test.pls)< sd(residuo.test.pls))]
+residuo.total.pls<- 
 ###########Calculating the Classic Parameters##########
 R2.pls.summary <- summary(lm(pls.train$pred ~ pls.train$obs))
 R2.pls <- R2.pls.summary$r.squared
@@ -67,7 +86,7 @@ parameter2.earth <- CV.earth$nprune
 RMSECV.earth <- CV.earth$RMSE
 RMSEP.earth <- sqrt(mean(residuo.test.earth^2))
 Q2.earth <- CV.earth$Rsquared
-R2.pred.earth <- qsarm::r2pred(predVals.earth$obs,predVals.earth$pred)
+R2.pred.earth <- qsarm::r2pred(earth.test$pred,earth.test$obs,earth.train$obs)
 ###########Calculating the Q2f3##########
 Q2f3.earth <- qsarm::Q2f3(predVals.earth$obs,predVals.earth$pred,pls.train$pred,ntest.pls,ntrain.pls)
 ###########Calculating the rm2 value for the TRAIN dataset###########
@@ -176,7 +195,10 @@ rm2.reverse.overall.rf <-  qsarm::rm2.reverse(predVals.rf$obs,predVals.rf$pred)
 average.rm2.overall.rf <- qsarm::average.rm2(predVals.rf$obs,predVals.rf$pred)
 ###########Calculating the Delta rm2 value for the OVERALL dataset###########
 delta.rm2.overall.rf <- qsarm::delta.rm2(predVals.rf$obs,predVals.rf$pred)
-##
+#######################################################
+###########Loading all Metric functions################
+#######################################################
+###
 M <- list(Metrics=matrix(c(R2.pls,RMSEC.pls,Q2.pls,RMSECV.pls,RMSEP.pls,R2.pred.pls, R2.earth,Q2.earth,RMSEC.earth,RMSECV.earth,RMSEP.earth,R2.pred.earth,  R2.knn,Q2.knn,RMSEC.knn,RMSECV.knn,RMSEP.knn,R2.pred.knn,  R2.rf,Q2.rf,RMSEC.rf,RMSECV.rf,RMSEP.rf,R2.pred.rf),byrow=TRUE,ncol=6))
 M$Metrics <- round(M$Metrics,digits=3)
 .GlobalEnv[["M"]] <- M
@@ -229,5 +251,4 @@ odfWeave("template-report.odt", "report.odt")
   } else { 
     print="ERROR in CALCULATE METRICS"
   }
-}
-}
+}}
