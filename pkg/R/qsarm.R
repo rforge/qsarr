@@ -4,7 +4,7 @@
 r2 <- function(y, equation, ... ){
   1 - (sum((y-predict(equation))^2)/sum((y-mean(y))^2))
 }
-#####
+#######
 r2pred <- function(Ypred.test, Yobs.test, Yobs.training, ... ){
   1-(sum((Ypred.test-Yobs.test)^2))/(sum( ((Yobs.test-mean(Yobs.training))^2) ))
 }
