@@ -15,17 +15,20 @@ knnFit.ad <- caret::train(Train.descriptors, unlist(Train.activity),
                        tuneLength = tuneLength,
                        trControl = fitControl)
 .GlobalEnv[["knnFit.ad"]] <- knnFit.ad
+CV.knn <- knnFit.ad$results[which.min(knnFit.ad$results[,2] ), ]
+parameter.knn <- CV.knn$k
+.GlobalEnv[["parameter.knn.ad"]] <- parameter.knn
 }
 }
 
-knn.ad.re <- function(cores=2,type=small, ...){
+knn.ad.re <- function(k.ad=parameter.knn.ad,type=small, ...){
 {
-ktrain=knn.dist(Train.descriptors, k=5,  algorithm=c("cover_tree") )
 
-ktest=knnx.dist(data=Train.descriptors,Test.descriptors, k=5, algorithm=c("cover_tree") ) 
+ktrain=knn.dist(Train.descriptors, k=k.ad,  algorithm=c("cover_tree") )
+ktest=knnx.dist(data=Train.descriptors,Test.descriptors, k=k.ad, algorithm=c("cover_tree") ) 
 
-Dc=(0.5*(sd(kt[,5])))+mean(kt[,5])
-ktest[,5]<Dc
+Dc=(0.5*(sd(kt[,k.ad])))+mean(kt[,k.ad])
+ktest[,k.ad]<Dc
 }
 }
 
