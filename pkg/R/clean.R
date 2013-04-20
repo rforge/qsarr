@@ -13,10 +13,14 @@ clean <- function(data = qsar.descriptors, ... ){
     # Remover correlação acima 90%
     descriptors.correlation.func <- cor(qsar.descriptors.nzv)
     assign("descriptors.correlation", descriptors.correlation.func, envir=.GlobalEnv)
-    descriptors.correlation.75.func <- caret::findCorrelation(descriptors.correlation, cutoff = .75)
+    descriptors.correlation.75.func <- caret::findCorrelation(descriptors.correlation, cutoff = .90)
     assign("descriptors.correlation.75", descriptors.correlation.75.func, envir=.GlobalEnv)
-    qsar.descriptors.cor.func <- qsar.descriptors.nzv[,-descriptors.correlation.75]
-    assign("qsar.descriptors.cor", qsar.descriptors.cor.func, envir=.GlobalEnv)
+    qsar.descriptors.cor.remove <- qsar.descriptors.nzv[,-descriptors.correlation.75]
+    assign("qsar.descriptors.cor.remove", qsar.descriptors.cor.remove, envir=.GlobalEnv)
+    preProcValues.func <- caret::preProcess(qsar.descriptors.cor.remove, method = c("center", "scale"))
+    assign("preProcValues", preProcValues.func, envir=.GlobalEnv)
+    qsar.descriptors.cor <- stats::predict(preProcValues, qsar.descriptors.cor.remove)
+    assign("qsar.descriptors.cor", qsar.descriptors.cor, envir=.GlobalEnv)
   } else { 
     qsar.descriptors.cor.func <- qsar.descriptors.na
     assign("qsar.descriptors.cor", qsar.descriptors.cor.func, envir=.GlobalEnv)

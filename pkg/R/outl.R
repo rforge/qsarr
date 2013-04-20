@@ -6,12 +6,12 @@ qsar.data.nzv <- qsar.data.na[, -qsar.data.nzvdesc]
 
 ##
 qsar.data.correlation <- cor(qsar.data.nzv)
-qsar.data.descriptors.correlation.75 <- caret::findCorrelation(qsar.data.correlation, cutoff = .90)
+qsar.data.descriptors.correlation.75 <- caret::findCorrelation(qsar.data.correlation, cutoff = .75)
 qsar.data.cor75 <- qsar.data.nzv[,-qsar.data.descriptors.correlation.75]
 
-s#pre- process data
+#pre- process data
 preProcValues <- caret::preProcess(qsar.data.cor75, method = c("center", "scale"))
-qsar.data.cor <- stats::predict(preProcValues, qsar.data.cor7)
+qsar.data.cor <- stats::predict(preProcValues, qsar.data.cor75)
 #definir numero de N
 
 #

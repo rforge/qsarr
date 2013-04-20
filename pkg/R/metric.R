@@ -19,7 +19,7 @@ dw.test.pls<-durbinWatsonTest(residuo.test.pls)
 dw.pls<-durbinWatsonTest(residuo.total.pls)
 ################remover 3x maior vairaça##############
 sigma=(sum(((residuo.total.pls - mean(residuo.total.pls))^2)))/(ntrain+ntest)
-sigma=sqrt(sd(dados$pIC50))
+sigma=sqrt(sd(qsar.activity$pIC50))
 pls.remove.out<-residuo.test.pls[(abs(residuo.test.pls)< (3*sigma))]
 plsre=c(residuo.train.pls,pls.remove.out)
 durbinWatsonTest(plsre)
@@ -43,8 +43,10 @@ RMSEP.pls <- qsarm::RMSEP(pls.test$obs,pls.test$pred,ntest)
 MAE.pls <- qsarm::MAE(pls.test$obs,pls.test$pred,ntest)
 Q2.pls <- CV.pls$Rsquared
 R2.pred.pls <- qsarm::r2pred(pls.test$pred,pls.test$obs,pls.train$obs)
+.GlobalEnv[["R2.pred.pls"]] <- R2.pred.pls
 ###########Calculating the Q2f3##########
 Q2f3.pls <- qsarm::Q2f3(pls.test$pred,pls.test$obs,pls.train$obs,ntest,ntrain)
+.GlobalEnv[["Q2f3.pls"]] <- Q2f3.pls
 ###########Calculating the rm2 value for the TRAIN dataset###########
 rm2.train.pls <- qsarm::rm2(pls.train$obs,pls.train$pred)
 ###########Calculating the reverse rm2 value for the TRAIN dataset###########
@@ -69,6 +71,8 @@ rm2.reverse.overall.pls <-  qsarm::rm2.reverse(predVals.pls$obs,predVals.pls$pre
 average.rm2.overall.pls <- qsarm::average.rm2(predVals.pls$obs,predVals.pls$pred)
 ###########Calculating the Delta rm2 value for the OVERALL dataset###########
 delta.rm2.overall.pls <- qsarm::delta.rm2(predVals.pls$obs,predVals.pls$pred)
+
+
 #######################################################
 ###########Calculating Metric for MARS model###########
 #######################################################

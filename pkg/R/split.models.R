@@ -1,8 +1,30 @@
 #export some useful variables
 random <- 1
 ks <- 2
-##
-split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 5, ... ){
+get.optimalpc <- function(prop=0.75,number = 10,repeats = 3,tuneLength = 15, parameters.pca = 2, ... ){
+#######################################################
+##################GET OPTIMAL PCS######################
+####################################################### 
+fitControl <- caret::trainControl(## 5-fold CV
+  method = "repeatedcv",
+  number = number,
+  ## repeated three times
+  repeats = repeats,
+  ## Save all the resampling results
+  returnResamp = "all")
+plsFit.pca<- caret::train(qsar.descriptors.cor, unlist(qsar.activity), 
+                          "pls",
+                          tuneLength = tuneLength,
+                          trControl = fitControl)
+.GlobalEnv[["plsFit.pca"]] <- plsFit.pca
+pca.pls <- plsFit.pca$results[which.min(plsFit.pca$results[,2] ), ]
+.GlobalEnv[["pca.pls"]] <- pca.pls
+parameters.pca <- pca.pls$ncomp
+.GlobalEnv[["parameters.pca"]] <- parameters.pca
+}
+
+
+split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 15, parameters.pca = get.optimalpc(),distance = "MD", ... ){
 library(caret)
 {if ((split) == random) { 
   set.seed(3456)
@@ -27,25 +49,6 @@ library(caret)
   .GlobalEnv[["pca.desc"]] <- pca.desc
   kvalue <- prop*nrow(qsar.descriptors.cor)
   .GlobalEnv[["kvalue"]] <- kvalue
-  #######################################################
-  ##################GET OPTIMAL PCS######################
-  ####################################################### 
-  fitControl <- caret::trainControl(## 5-fold CV
-    method = "repeatedcv",
-    number = number,
-    ## repeated three times
-    repeats = repeats,
-    ## Save all the resampling results
-    returnResamp = "all")
-  plsFit.pca<- caret::train(qsar.descriptors.cor, unlist(qsar.activity), 
-                        "pls",
-                        tuneLength = tuneLength,
-                        trControl = fitControl)
-  .GlobalEnv[["plsFit.pca"]] <- plsFit.pca
-  pca.pls <- plsFit.pca$results[which.min(plsFit.pca$results[,2] ), ]
-  .GlobalEnv[["pca.pls"]] <- pca.pls
-  parameters.pca <- pca.pls$ncomp
-  .GlobalEnv[["parameters.pca"]] <- parameters.pca
   #######################################################
   #################Calculating  KS################
   #######################################################
