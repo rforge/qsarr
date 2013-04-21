@@ -48,7 +48,8 @@ parameter.knn <- CV.knn$k
 outliers.knn.first<-subset(row.names(qsar.descriptors.cor), subset = ktotal.x>Dc  | (ktotal.y < -3 | ktotal.y > 3))
       .GlobalEnv[["ooutliers.knn.first"]] <- outliers.knn.first
 true.outliers.matrix=as.data.frame(rbind(as.matrix(rownames(Train.descriptors)),as.matrix(rownames(Test.descriptors))))
-outliers.knn=true.matrix[as.numeric(outliers.knn.first), ]
+outliers.knn.m= as.matrix(true.outliers.matrix[as.numeric(outliers.knn.first), ])
+outliers.knn <- as.numeric(outliers.knn.m)
       .GlobalEnv[["ooutliers.knn"]] <- outliers.knn
 outliers.knn.xy<- ktotal[outliers.knn.first, ]
 outliers.knn.x <- outliers.knn.xy[1]
