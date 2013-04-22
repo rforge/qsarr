@@ -24,7 +24,7 @@ parameters.pca <- pca.pls$ncomp
 }
 
 
-split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 15, parameters.pca = get.optimalpc(),distance = "MD", ... ){
+split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 15, parameters.pca = 2,distance = "MD", ... ){
 library(caret)
 {if ((split) == random) { 
   set.seed(3456)
