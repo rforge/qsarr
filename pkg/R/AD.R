@@ -96,12 +96,6 @@ pls.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 50, 
   stdres.test.pls=((pls.test.ad$obs - pls.test.ad$pred)-mean(pls.test.ad$obs - pls.test.ad$pred))/sd(pls.test.ad$obs - pls.test.ad$pred)
   h1 <- round((3*((ncol(Train.descriptors)+1))/nrow(Train.descriptors)),digits=2)
   .GlobalEnv[["h1"]] <- h1
-  ##dublin
-  residuo.total.pls.ad <- (predVals.pls.ad$obs - predVals.pls.ad$pred)
-  .GlobalEnv[["residuo.total.pls.ad"]] <- residuo.total.pls.ad
-  dw.pls.ad<-durbinWatsonTest(residuo.total.pls.ad)
-  .GlobalEnv[["dw.pls.ad"]] <- dw.pls.ad
-  #
   mat.leve.train=cbind(Hat.train,stdres.train.pls)
   mat.leve.test=cbind(Hat.test,stdres.test.pls)
   plstotal=rbind(mat.leve.train,mat.leve.test)
