@@ -95,6 +95,7 @@ pls.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 50, 
   stdres.train.pls=((pls.train.ad$obs - pls.train.ad$pred)-mean(pls.train.ad$obs - pls.train.ad$pred))/sd(pls.train.ad$obs - pls.train.ad$pred)
   stdres.test.pls=((pls.test.ad$obs - pls.test.ad$pred)-mean(pls.test.ad$obs - pls.test.ad$pred))/sd(pls.test.ad$obs - pls.test.ad$pred)
   h1 <- round((3*((ncol(Train.descriptors)+1))/nrow(Train.descriptors)),digits=2)
+  .GlobalEnv[["h1"]] <- h1
   ##dublin
   residuo.total.pls.ad <- (predVals.pls.ad$obs - predVals.pls.ad$pred)
   .GlobalEnv[["residuo.total.pls.ad"]] <- residuo.total.pls.ad
