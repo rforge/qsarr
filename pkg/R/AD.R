@@ -106,10 +106,10 @@ pls.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 50, 
   outliers.pls.xy <- as.data.frame(plstotal)[outliers.pls,]
   outliers.pls.x <- outliers.pls.xy[,1]
   outliers.pls.y <- outliers.pls.xy[,2]
-  xmax.pls=(max(mat.leve.test[,1])+0.5)
-  xmin.pls=(min(mat.leve.test[,1]))
-  ymax.pls=(max(mat.leve.test[,2])+0.5)
-  ymin.pls=(min(mat.leve.test[,2])-0.5)
+  xmax.pls=(max(plstotal[,1])+0.5)
+  xmin.pls=(min(plstotal[,1]))
+  ymax.pls=(max(plstotal[,2])+0.5)
+  ymin.pls=(min(plstotal[,2])-0.5)
   pos.pls=(xmax.pls*0.2)
   png(file="AD-pls.png", width=1430, height=1004, res=144)
   plot(mat.leve.train, xlab="Leverages", ylab="Standardized residuals",  xlim=c(xmin.pls,xmax.pls), ylim=c(ymin.pls,ymax.pls),pch=16,cex=0.8)
