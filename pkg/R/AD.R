@@ -119,7 +119,7 @@ points(mat.leve.test, col="red", pch=17, cex=0.8)
 text(x=unlist(outliers.pls.x),y=unlist(outliers.pls.y),labels=outliers.pls, cex=0.6, pos=4, col="black")
 abline(h=3.0, lty=2);abline(h=-3.0, lty=2);abline(v=h1, lty=2)
 legend((xmax.pls -(pos.pls)),3, c("Training Set","Test Set"), pch=c(16,17),col=c("black","red"),bty='n', cex=1.1)
-text((xmax.pls-0.2),ymax.pls/2, bquote( italic(h^"*") == .(h1) ) )
+text((xmax.pls-0.3),ymax.pls/2.5, bquote( italic(h^"*") == .(h1) ) )
 dev.off()  
 }
 }

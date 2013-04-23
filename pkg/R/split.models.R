@@ -1,6 +1,7 @@
 #export some useful variables
 random <- 1
-ks <- 2
+ks.md <- 2
+ks.ed <- 3
 get.optimalpc <- function(prop=0.75,number = 10,repeats = 3,tuneLength = 50, parameters.pca = 2, ... ){
 #######################################################
 ##################GET OPTIMAL PCS######################
@@ -44,7 +45,9 @@ library(caret)
   assign("Train.descriptors", Train.descriptors.func, envir=.GlobalEnv)
   Test.descriptors.func <- stats::predict(preProcValues, test)
   assign("Test.descriptors", Test.descriptors.func, envir=.GlobalEnv)
-} else if ((split) == ks){
+
+}else if ((split) == ks.md) { 
+
   pca.desc <-  prcomp(qsar.descriptors.cor)
   .GlobalEnv[["pca.desc"]] <- pca.desc
   kvalue <- prop*nrow(qsar.descriptors.cor)
@@ -69,9 +72,39 @@ library(caret)
   Train.descriptors.func <- stats::predict(preProcValues, training)
   assign("Train.descriptors", Train.descriptors.func, envir=.GlobalEnv)
   Test.descriptors.func <- stats::predict(preProcValues, test)
+  assign("Test.descriptors", Test.descriptors.func, envir=.GlobalEnv)  
+  
+} else if ((split) == ks.ed){
+  pca.desc <-  prcomp(qsar.descriptors.cor)
+  .GlobalEnv[["pca.desc"]] <- pca.desc
+  kvalue <- prop*nrow(qsar.descriptors.cor)
+  .GlobalEnv[["kvalue"]] <- kvalue
+  #######################################################
+  #################Calculating  KS################
+  #######################################################
+  kennardStone.desc <- kennardStone(pca.desc$x[ ,1:parameters.pca], profN = NULL, k =kvalue , distance = "ED", StartCenter = TRUE)
+  .GlobalEnv[["kennardStone.desc"]] <- kennardStone.desc
+  TrainIndex <- kennardStone.desc$cal
+  .GlobalEnv[["TrainIndex"]] <- TrainIndex
+  Train.activity.func <- (as.data.frame(qsar.activity))[TrainIndex, ]
+  assign("Train.activity", Train.activity.func, envir=.GlobalEnv)
+  training.func <- (as.data.frame(qsar.descriptors.cor))[TrainIndex, ]
+  assign("training", training.func, envir=.GlobalEnv)
+  Test.activity.func <- (as.data.frame(qsar.activity))[-TrainIndex, ]
+  assign("Test.activity", Test.activity.func, envir=.GlobalEnv)
+  test.func <-  (as.data.frame(qsar.descriptors.cor))[-TrainIndex, ]
+  assign("test", test.func, envir=.GlobalEnv)
+  preProcValues.func <- caret::preProcess(training, method = c("center", "scale"))
+  assign("preProcValues", preProcValues.func, envir=.GlobalEnv)
+  Train.descriptors.func <- stats::predict(preProcValues, training)
+  assign("Train.descriptors", Train.descriptors.func, envir=.GlobalEnv)
+  Test.descriptors.func <- stats::predict(preProcValues, test)
   assign("Test.descriptors", Test.descriptors.func, envir=.GlobalEnv)
 } else {      
   print="Empity Model"
 }         
 }
 }
+
+
+
