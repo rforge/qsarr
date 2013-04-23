@@ -1,7 +1,7 @@
 Package: qsarr
 Type: Package
 Title: qsaR in R - A flexible framework for working with QSAR and QSPR in R
-Version: 1.3
+Version: 1.4
 Date: 2012-11-20
 Authors@R: c(person("Rodolpho C. Braga", "Developer", role = c("aut", "cre"),
                           email = "rodolphobraga@yahoo.com"),
