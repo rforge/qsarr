@@ -71,54 +71,56 @@ pls.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 50, 
 {  
   fitControl <- caret::trainControl(## 10-fold CV
     method = "repeatedcv",
-    number = 10,
+    number = number,
     ## repeated three times
-    repeats = 3,
+    repeats = repeats,
     ## Save all the resampling results
     returnResamp = "all")
-  plsFit.ad<- caret::train(Train.descriptors, unlist(Train.activity), 
+plsFit.ad<- caret::train(Train.descriptors, unlist(Train.activity), 
                            "pls",
                            tuneLength = tuneLength,
                            trControl = fitControl)
-  .GlobalEnv[["plsFit.ad"]] <- plsFit.ad
-  predVals.pls.ad <- caret::extractPrediction(list(plsFit.ad),
+      .GlobalEnv[["plsFit.ad"]] <- plsFit.ad
+predVals.pls.ad <- caret::extractPrediction(list(plsFit.ad),
                                               testX = Test.descriptors, 
                                               testY = Test.activity)
-  .GlobalEnv[["predVals.pls.ad"]] <- predVals.pls.ad
-  ##
-  Traind.pls= as.matrix(Train.descriptors)
-  Testd.pls= as.matrix(Test.descriptors)
-  Hat.train= diag(Traind.pls %*% solve(t(Traind.pls) %*%(Traind.pls), tol=1e-40)  %*% t(Traind.pls))
-  Hat.test= diag(Testd.pls %*% solve(t(Traind.pls) %*%(Traind.pls), tol=1e-40)  %*% t(Testd.pls))  
-  pls.train.ad <- subset(predVals.pls.ad, dataType == "Training")
-  pls.test.ad <- subset(predVals.pls.ad, dataType == "Test")
-  stdres.train.pls=((pls.train.ad$obs - pls.train.ad$pred)-mean(pls.train.ad$obs - pls.train.ad$pred))/sd(pls.train.ad$obs - pls.train.ad$pred)
-  stdres.test.pls=((pls.test.ad$obs - pls.test.ad$pred)-mean(pls.test.ad$obs - pls.test.ad$pred))/sd(pls.test.ad$obs - pls.test.ad$pred)
-  h1 <- round((3*((ncol(Train.descriptors)+1))/nrow(Train.descriptors)),digits=2)
-  .GlobalEnv[["h1"]] <- h1
-  mat.leve.train=cbind(Hat.train,stdres.train.pls)
-  mat.leve.test=cbind(Hat.test,stdres.test.pls)
-  plstotal=rbind(mat.leve.train,mat.leve.test)
-  plstotal.x=as.data.frame(plstotal[,1])
-  plstotal.y=as.data.frame(plstotal[,2])
-  outliers.pls<-subset(row.names(plstotal.x), subset =plstotal.x >h1  | (plstotal.y < -3 | plstotal.y > 3))
-  .GlobalEnv[["outliers.pls"]] <- outliers.pls
-  outliers.pls.xy <- as.data.frame(plstotal)[outliers.pls,]
-  outliers.pls.x <- outliers.pls.xy[,1]
-  outliers.pls.y <- outliers.pls.xy[,2]
-  xmax.pls=(max(plstotal[,1])+0.5)
-  xmin.pls=(min(plstotal[,1]))
-  ymax.pls=(max(plstotal[,2])+0.5)
-  ymin.pls=(min(plstotal[,2])-0.5)
-  pos.pls=(xmax.pls*0.2)
-  png(file="AD-pls.png", width=1430, height=1004, res=144)
-  plot(mat.leve.train, xlab="Leverages", ylab="Standardized residuals",  xlim=c(xmin.pls,xmax.pls), ylim=c(ymin.pls,ymax.pls),pch=16,cex=0.8)
-  points(mat.leve.test, col="red", pch=17, cex=0.8)
-  text(x=unlist(outliers.pls.x),y=unlist(outliers.pls.y),labels=outliers.pls, cex=0.6, pos=4, col="black")
-  abline(h=3.0, lty=2);abline(h=-3.0, lty=2);abline(v=h1, lty=2)
-  legend((xmax.pls -(pos.pls)),3, c("Training Set","Test Set"), pch=c(16,17),col=c("black","red"),bty='n', cex=1.1)
-  text((xmax.pls-0.2),ymax.pls/2, bquote( italic(h^"*") == .(h1) ) )
-  dev.off()  
+      .GlobalEnv[["predVals.pls.ad"]] <- predVals.pls.ad
+##
+Traind.pls= as.matrix(Train.descriptors)
+Testd.pls= as.matrix(Test.descriptors)
+Hat.train= diag(Traind.pls %*% solve(t(Traind.pls) %*%(Traind.pls), tol=1e-40)  %*% t(Traind.pls))
+      .GlobalEnv[["Hat.train"]] <- Hat.train
+Hat.test= diag(Testd.pls %*% solve(t(Traind.pls) %*%(Traind.pls), tol=1e-40)  %*% t(Testd.pls))  
+      .GlobalEnv[["Hat.test"]] <- Hat.test
+pls.train.ad <- subset(predVals.pls.ad, dataType == "Training")
+pls.test.ad <- subset(predVals.pls.ad, dataType == "Test")
+stdres.train.pls=((pls.train.ad$obs - pls.train.ad$pred)-mean(pls.train.ad$obs - pls.train.ad$pred))/sd(pls.train.ad$obs - pls.train.ad$pred)
+stdres.test.pls=((pls.test.ad$obs - pls.test.ad$pred)-mean(pls.test.ad$obs - pls.test.ad$pred))/sd(pls.test.ad$obs - pls.test.ad$pred)
+h1 <- round((3*((ncol(Train.descriptors)+1))/nrow(Train.descriptors)),digits=2)
+      .GlobalEnv[["h1"]] <- h1
+mat.leve.train=cbind(Hat.train,stdres.train.pls)
+mat.leve.test=cbind(Hat.test,stdres.test.pls)
+plstotal=rbind(mat.leve.train,mat.leve.test)
+plstotal.x=as.data.frame(plstotal[,1])
+plstotal.y=as.data.frame(plstotal[,2])
+outliers.pls<-subset(row.names(plstotal.x), subset =plstotal.x >h1  | (plstotal.y < -3 | plstotal.y > 3))
+      .GlobalEnv[["outliers.pls"]] <- outliers.pls
+outliers.pls.xy <- as.data.frame(plstotal)[outliers.pls,]
+outliers.pls.x <- outliers.pls.xy[,1]
+outliers.pls.y <- outliers.pls.xy[,2]
+xmax.pls=(max(plstotal[,1])+0.5)
+xmin.pls=(min(plstotal[,1]))
+ymax.pls=(max(plstotal[,2])+0.5)
+ymin.pls=(min(plstotal[,2])-0.5)
+pos.pls=(xmax.pls*0.2)
+png(file="AD-pls.png", width=1430, height=1004, res=144)
+plot(mat.leve.train, xlab="Leverages", ylab="Standardized residuals",  xlim=c(xmin.pls,xmax.pls), ylim=c(ymin.pls,ymax.pls),pch=16,cex=0.8)
+points(mat.leve.test, col="red", pch=17, cex=0.8)
+text(x=unlist(outliers.pls.x),y=unlist(outliers.pls.y),labels=outliers.pls, cex=0.6, pos=4, col="black")
+abline(h=3.0, lty=2);abline(h=-3.0, lty=2);abline(v=h1, lty=2)
+legend((xmax.pls -(pos.pls)),3, c("Training Set","Test Set"), pch=c(16,17),col=c("black","red"),bty='n', cex=1.1)
+text((xmax.pls-0.2),ymax.pls/2, bquote( italic(h^"*") == .(h1) ) )
+dev.off()  
 }
 }
 
