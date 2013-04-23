@@ -40,7 +40,9 @@ residuo.train.pls <- (pls.train$obs - pls.train$pred)
 residuo.test.pls <- (pls.test$obs - pls.test$pred)
 residuo.total.pls <- (predVals.pls$obs - predVals.pls$pred)
 res.95 <- count(abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
+      .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
 res.95ci <- (res.95$freq[2])*100/nrow(pls.train)
+      .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
 Train.descriptors.opt <- subset(Train.descriptors, abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
       .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
 Train.activity.opt <- subset(Train.activity, abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
