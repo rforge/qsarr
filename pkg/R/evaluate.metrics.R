@@ -1,11 +1,12 @@
 evaluate <- function(stantard=1, ... ){
 #####################################################
-Yobs.training <- as.matrix(Trainind.Data[1])
-Ypred.training <- as.matrix(Trainind.Data[1])
-Ncompounds.training <- nrow(Trainind.Data)
-Yobs.test  <- as.matrix(Test.Data[1])
-Ypred.test <- as.matrix(Test.Data[2])
-Ncompounds.test <- nrow(Test.Data)
+#SYBYL
+Yobs.training <- as.matrix(Training[2])
+Ypred.training <- as.matrix(Training[3])
+Ncompounds.training <- nrow(Training)
+Yobs.test  <- as.matrix(Test[2])
+Ypred.test <- as.matrix(Test[3])
+Ncompounds.test <- nrow(Test) 
 #####################################################
 cat("##### Q2f1 for Test or External Validation - Old R2Pred #####\n")
 print(qsarm::r2pred(Ypred.test, Yobs.test, Yobs.training))
