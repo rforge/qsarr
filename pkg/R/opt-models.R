@@ -1,5 +1,13 @@
-opt.models <- function(cores=2,type=pls,method=cv ,number = 10,repeats = 3,tuneLength = 50, ...){
-{if (((type) == pls & (method) == cv)) {
+#######################################################
+################ Model optimizartion##################
+####################################################### 
+#######################################################
+################Some Useful Variables##################
+####################################################### 
+rf <- 1
+cv=2
+opt.models <- function(cores=2,type=rf,method=cv ,number = 5,repeats = 3,tuneLength = 15, ...){
+{if (((type) == rf & (method) == cv)) {
   #######################################################
   #############Calculating MODELS SMALL ##############
   #######################################################
@@ -11,7 +19,7 @@ opt.models <- function(cores=2,type=pls,method=cv ,number = 10,repeats = 3,tuneL
   #######################################################
   #######################CV method#######################
   ####################################################### 
-fitControl <- caret::trainControl(## 10-fold CV
+fitControl <- caret::trainControl(## 5-fold CV
     method = "repeatedcv",
     number = number,
     ## repeated three times
@@ -23,7 +31,7 @@ fitControl <- caret::trainControl(## 10-fold CV
 #################Calculating  PLS model################
 #######################################################
 plsFit<- caret::train(Train.descriptors, unlist(Train.activity), 
-                        "pls",
+                        "rf",
                         tuneLength = tuneLength,
                         trControl = fitControl)
       .GlobalEnv[["plsFit"]] <- plsFit
@@ -39,16 +47,24 @@ pls.test <- subset(predVals.pls, dataType == "Test")
 residuo.train.pls <- (pls.train$obs - pls.train$pred)
 residuo.test.pls <- (pls.test$obs - pls.test$pred)
 residuo.total.pls <- (predVals.pls$obs - predVals.pls$pred)
-res.95 <- count(abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
-      .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
-res.95ci <- (res.95$freq[2])*100/nrow(pls.train)
-      .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
+residue.95 <- count(abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
+      .GlobalEnv[["residue.95"]] <- residue.95
+outilier.train.95.pls <- subset(row.names(Train.descriptors), subset = (abs(residuo.train.pls)>2*sd(residuo.train.pls)))
+      .GlobalEnv[["outilier.train.95.pls"]] <- outilier.train.95.pls
+cat("##### Outliers in Train Set over 95% of the Standard Deviation (2*SD)  #####\n")
+print(outilier.train.95.pls)
+predictivity.train <- (residue.95$freq[2])*100/nrow(pls.train)
+      .GlobalEnv[["predictivity.train"]] <- predictivity.train
+Train.descriptors.backup <- Train.descriptors
+      .GlobalEnv[["Train.descriptors.backup"]] <- Train.descriptors.backup
+Train.activity.backup  <-  Train.activity
+      .GlobalEnv[["Train.activity.backup"]] <- Train.activity.backup
 Train.descriptors.opt <- subset(Train.descriptors, abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
-      .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
+      .GlobalEnv[["Train.descriptors.opt"]] <- Train.descriptors.opt
 Train.activity.opt <- subset(Train.activity, abs(residuo.train.pls)< (2*sd(residuo.train.pls)))
       .GlobalEnv[["Train.activity.opt"]] <- Train.activity.opt
 plsFit.opt<- caret::train(Train.descriptors.opt, unlist(Train.activity.opt), 
-                        "pls",
+                        "rf",
                         tuneLength = tuneLength,
                         trControl = fitControl)
       .GlobalEnv[["plsFit.opt"]] <- plsFit.opt
@@ -56,9 +72,14 @@ predVals.pls.opt <- caret::extractPrediction(list(plsFit.opt),
                                            testX = Test.descriptors, 
                                            testY = Test.activity)
       .GlobalEnv[["predVals.pls.opt"]] <- predVals.pls.opt
+cat("##### The Plot of Optimized PLS Model is saved - file models-pls-opt.png #####\n")
 png(file="models-pls-opt.png", width=1430, height=1004, res=144)
 plot(caret::plotObsVsPred(predVals.pls.opt))
-dev.off()  
+dev.off()
+Train.descriptors <- Train.descriptors.opt
+      .GlobalEnv[["Train.descriptors"]] <- Train.descriptors
+Train.activity <-  Train.activity.opt
+      .GlobalEnv[["Train.activity"]] <- Train.activity
   } else {      
   print="Empity Model"
 }         

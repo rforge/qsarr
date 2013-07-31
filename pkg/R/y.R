@@ -3,11 +3,11 @@ random.y <- function(A) {
   outplut=list(A)
 } 
 
-yrandomization <- function(A=qsar.activity,matrix.x=qsar.descriptors.cor, repl=10) { 
+yrandomization <- function(model="pls",A=as.matrix(Train.activity),matrix.x=Train.descriptors, repl=(nrow(Train.descriptors)-1)) { 
 {
   QY <- train(matrix.x, unlist(A),
-              "pls",
-              tuneLength = 20,
+              model,
+              tuneLength = 10,
               trControl = trainControl(
                 method = "boot632", returnResamp = "all"))
   .GlobalEnv[["QY"]] <- QY
@@ -27,10 +27,10 @@ yrandomization <- function(A=qsar.activity,matrix.x=qsar.descriptors.cor, repl=1
 Q <- data.frame(sapply( 1:ncol( random.mat.dataframe ), 
                         function( i ) 
                           train(matrix.x, unlist(random.mat.dataframe[,i]),
-                                "pls",
-                                tuneLength = 20,
+                                model,
+                                tuneLength = 10,
                                 trControl = trainControl(
-                                  method = "boot632", returnResamp = "all"))
+                                method = "boot632", returnResamp = "all"))
                         
 ))
 .GlobalEnv[["Q"]] <- Q
@@ -47,5 +47,16 @@ extract.q <- data.frame(sapply( 1:ncol( extract ),
                                   extract[,i]$Rsquared
                                 
 ))
-.GlobalEnv[["extract.23"]] <- extract.q
+yrandomization.resuts<-as.data.frame(extract.q)
+colnames(yrandomization.resuts) <- "Qsquared"
+.GlobalEnv[["yrandomization.resuts"]] <- yrandomization.resuts
+cat("##### Y-randomization Test #####\n")
+print(yrandomization.resuts)
+yrandomization.mean<- mean(yrandomization.resuts$Qsquared)
+cat("##### Y-randomization Qsquared mean #####\n")
+print(yrandomization.mean)
+.GlobalEnv[["yrandomization.mean"]] <- yrandomization.mean
+#plot
+bwplot(as.matrix(yrandomization.resuts), xlab="Qsquared", main="Y-randomization test")
 }
+

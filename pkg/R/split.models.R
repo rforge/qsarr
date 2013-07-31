@@ -2,7 +2,7 @@
 random <- 1
 ks.md <- 2
 ks.ed <- 3
-get.optimalpc <- function(prop=0.75,number = 10,repeats = 3,tuneLength = 50, parameters.pca = 2, ... ){
+get.optimalpc <- function(prop=0.75,number = 10,repeats = 3,tuneLength = 50, ... ){
 #######################################################
 ##################GET OPTIMAL PCS######################
 ####################################################### 
@@ -25,7 +25,7 @@ parameters.pca <- pca.pls$ncomp
 }
 
 
-split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 50, parameters.pca = get.optimalpc(),distance = "MD", ... ){
+split <- function(split=random,prop=0.75,number = 10,repeats = 3,tuneLength = 50, parameters.pca = get.optimalpc(), ... ){
 library(caret)
 {if ((split) == random) { 
   set.seed(3456)
