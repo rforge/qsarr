@@ -17,7 +17,7 @@ residuo.total.pls <- (predVals.pls$obs - predVals.pls$pred)
 dw.train.pls<-durbinWatsonTest(residuo.train.pls)
 dw.test.pls<-durbinWatsonTest(residuo.test.pls)
 dw.pls<-durbinWatsonTest(residuo.total.pls)
-################remover 3x maior vairaça##############
+################remover 3x maior vairaca##############
 sigma=(sum(((residuo.total.pls - mean(residuo.total.pls))^2)))/(ntrain+ntest)
 sigma=sqrt(sd(as.matrix(qsar.activity[1])))
 pls.remove.out<-residuo.test.pls[(abs(residuo.test.pls)< (3*sigma))]

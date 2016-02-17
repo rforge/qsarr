@@ -10,7 +10,7 @@ clean <- function(data = qsar.descriptors, ... ){
     assign("nzv.func", nzv.func, envir=.GlobalEnv)
     qsar.descriptors.nzv.func <- qsar.descriptors.na[, -nzv]
     assign("qsar.descriptors.nzv", qsar.descriptors.nzv.func, envir=.GlobalEnv)
-    # Remover correlação acima 90%
+    # Remover correlacao acima 90%
     descriptors.correlation.func <- cor(qsar.descriptors.nzv)
     assign("descriptors.correlation", descriptors.correlation.func, envir=.GlobalEnv)
     descriptors.correlation.75.func <- caret::findCorrelation(descriptors.correlation, cutoff = .75)
@@ -39,7 +39,7 @@ clean.noPre <- function(data = qsar.descriptors, ... ){
     assign("nzv.func", nzv.func, envir=.GlobalEnv)
     qsar.descriptors.nzv.func <- qsar.descriptors.na[, -nzv]
     assign("qsar.descriptors.nzv", qsar.descriptors.nzv.func, envir=.GlobalEnv)
-    # Remover correlação acima 90%
+    # Remover correlacao acima 90%
     descriptors.correlation.func <- cor(qsar.descriptors.nzv)
     assign("descriptors.correlation", descriptors.correlation.func, envir=.GlobalEnv)
     descriptors.correlation.75.func <- caret::findCorrelation(descriptors.correlation, cutoff = .75)
