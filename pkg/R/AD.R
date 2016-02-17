@@ -1,70 +1,54 @@
-###http://www.inside-r.org/packages/cran/FNN/docs/knnx.dist
-knn.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 15, ...){
-{  
-  library(doMC)
-  doMC::registerDoMC(cores)
-  fitControl <- caret::trainControl(## 10-fold CV
-    method = "repeatedcv",
-    number = number,
-    ## repeated three times
-    repeats = repeats,
-    ## Save all the resampling results
-    returnResamp = "all")
-  knnFit.ad <- caret::train(Train.descriptors, unlist(Train.activity),
-                            "knn",
-                            tuneLength = tuneLength,
-                            trControl = fitControl)
-  .GlobalEnv[["knnFit.ad"]] <- knnFit.ad
-  predVals.knn.ad <- caret::extractPrediction(list(knnFit.ad),
-                                              testX = Test.descriptors,
-                                              testY = Test.activity)
-  .GlobalEnv[["predVals.knn.ad"]] <- predVals.knn.ad
-  CV.knn <- knnFit.ad$results[which.min(knnFit.ad$results[,2] ), ]
-  parameter.knn <- CV.knn$k
-  .GlobalEnv[["parameter.knn"]] <- parameter.knn  
-  ###
-  ktrain=knn.dist(Train.descriptors, k=parameter.knn,  algorithm=c("cover_tree") )
+knn.ad <- function(Train.descriptors= Train.descriptors, Test.descriptors= Test.descriptors,Train.activity=Train.activity, Test.activity=Test.activity, parameter.knn=5, DC.par=0.5, ...){
+{
+  #Libraries
+  library(qsarr)
+  library(FNN)
+  ktrain=(knn.dist(Train.descriptors, k=parameter.knn  )[,parameter.knn])
+  ktrain=abs(ktrain)
   .GlobalEnv[["ktrain"]] <- ktrain
-  ktest=knnx.dist(data=Train.descriptors,Test.descriptors, k=parameter.knn, algorithm=c("cover_tree") ) 
+  ktest=(knnx.dist(data=Train.descriptors,Test.descriptors, k=parameter.knn )[,parameter.knn])
+  ktest=abs(ktest)
   .GlobalEnv[["ktest"]] <- ktest
-  Dc=(0.5*(sd(ktrain[,parameter.knn])))+mean(ktrain[,parameter.knn])
+  Dc=(DC.par*(sd(ktrain)))+mean(ktrain)
   .GlobalEnv[["Dc"]] <- Dc
-  cat("##### Train #####\n")
-  print(ktrain[,parameter.knn]<Dc)
-  print(row.names(Train.descriptors))
+}
+}
+
+
+knn.ad.plot <- function(Train.descriptors= Train.descriptors, Test.descriptors= Test.descriptors,Train.activity=Train.activity, Test.activity=Test.activity, parameter.knn=5, DC.par=0.5, ...){
+{  
+  ktrain=(knn.dist(Train.descriptors, k=parameter.knn,  algorithm=c("cover_tree") )[,parameter.knn])
+  .GlobalEnv[["ktrain"]] <- ktrain
+  ktest=(knnx.dist(data=Train.descriptors,Test.descriptors, k=parameter.knn, algorithm=c("cover_tree") )[,parameter.knn])
+  .GlobalEnv[["ktest"]] <- ktest
+  Dc=(DC.par*(sd(ktrain)))+mean(ktrain)
+  print(Dc)
+  .GlobalEnv[["Dc"]] <- Dc
   cat("##### Test #####\n")
-  print(ktest[,parameter.knn]<Dc)
+  print(ktest<Dc)
   print(row.names(Test.descriptors))
   #######Plot
-  knn.train.ad <- subset(predVals.knn.ad, dataType == "Training")
-  knn.test.ad <- subset(predVals.knn.ad, dataType == "Test")
-  stdres.train.knn=((knn.train.ad$obs - knn.train.ad$pred)-mean(knn.train.ad$obs - knn.train.ad$pred))/sd(knn.train.ad$obs - knn.train.ad$pred)
-  stdres.test.knn=((knn.test.ad$obs - knn.test.ad$pred)-mean(knn.test.ad$obs - knn.test.ad$pred))/sd(knn.test.ad$obs - knn.test.ad$pred)
-  mat.AD.train.knn=cbind(ktrain[,parameter.knn],stdres.train.knn)
-  mat.AD.test.knn=cbind(ktest[,parameter.knn],stdres.test.knn)
-  ktotal.y=as.data.frame(rbind(as.matrix(stdres.train.knn),as.matrix(stdres.test.knn)))
-  ktotal.x=as.data.frame(rbind(as.matrix(ktrain[,parameter.knn]),as.matrix(ktest[,parameter.knn])))
-  ktotal=cbind(ktotal.x,ktotal.y)
-  outliers.knn.first<-subset(row.names(qsar.descriptors.cor), subset = ktotal.x>Dc  | (ktotal.y < -3 | ktotal.y > 3))
+  outliers.knn.first<-subset(row.names(Test.descriptors), subset = ktest>Dc  )
   .GlobalEnv[["outliers.knn.first"]] <- outliers.knn.first
-  true.outliers.matrix=as.data.frame(rbind(as.matrix(rownames(Train.descriptors)),as.matrix(rownames(Test.descriptors))))
+  modelcules.DA<-subset(row.names(Test.descriptors), subset = ktest<Dc  )
+  Test.activity.df<-as.data.frame(Test.activity)
+  Test.activity.df.int<-subset(row.names(Test.descriptors), subset = ktest<100000000000000*Dc )
+  rownames(Test.activity.df) <- as.numeric(Test.activity.df.int)
+  .GlobalEnv[["modelcules.DA"]] <- modelcules.DA
+  true.outliers.matrix=as.data.frame(as.matrix(rownames(Test.descriptors)))
   outliers.knn.m= as.matrix(true.outliers.matrix[as.numeric(outliers.knn.first), ])
   outliers.knn <- as.numeric(outliers.knn.m)
   .GlobalEnv[["outliers.knn"]] <- outliers.knn
-  outliers.knn.xy<- ktotal[outliers.knn.first, ]
-  outliers.knn.x <- outliers.knn.xy[1]
-  outliers.knn.y <- outliers.knn.xy[2]
-  xmax.knn=(max(ktotal.x)+1)
-  xmin.knn=(min(ktotal.x)-1)
-  png(file="AD-knn.png", width=1430, height=1004, res=144)
-  plot(mat.AD.train.knn, xlab="Euclidean distance of the k nearest neighbors", ylab="Standardized residuals", ylim=c(-3.4,3.4),  xlim=c(xmin.knn,xmax.knn),pch=16,cex=0.8)
-  points(mat.AD.test.knn, col="red", pch=17, cex=0.8)
-  text(x=unlist(outliers.knn.x),y=unlist(outliers.knn.y),labels=outliers.knn, cex=0.6, pos=4, col="black")
-  abline(h=3.0, lty=2);abline(h=-3.0, lty=2);abline(v=Dc, lty=2)
-  legend((xmax.knn-1.6),3, c("Training Set","Test Set"), pch=c(16,17),col=c("black","red"),bty='n', cex=1.1)
-  dev.off()
+  cpd=as.data.frame(row.names(Test.descriptors))
+  plotmatrix.da=(cbind(cpd,ktest))
+  .GlobalEnv[["plotmatrix.da"]] <- plotmatrix.da
+  chartad=barchart(ktest~row.names(Test.descriptors), data=plotmatrix.da,as.table = TRUE, horizontal = FALSE, ylab = "Euclidean distance of the k nearest neighbors", xlab = "compounds" , panel=function(x,y,...){
+    panel.abline(h=Dc, col.line="black")
+    panel.barchart(x,y,...)})
+  .GlobalEnv[["chartad"]] <- chartad
 }
 }
+
 
 pls.ad <- function(cores=2, method=cv ,number = 10,repeats = 3,tuneLength = 50, ...){
 {  
@@ -193,38 +177,3 @@ bring.ad <- function(cores=2, method=cv ,number = 20,repeats = 3,tuneLength = 15
   .GlobalEnv[["predVals.knn.ad.remove"]] <- predVals.knn.ad.remove 
 }
 }
-
-
-#dist=knn.dist(qsar.descriptors.cor, k=parameter.knn,  algorithm=c("cover_tree") )
-#toba=as.data.frame(dist[,5])
-
-#subset(row.names(qsar.descriptors),toba>5)
-
-#namb=nrow(dist)/test.split
-#(nrow(qsar.descriptors))-namb ate todos 24
-
-
-#tra.split=(nrow(dist)*0.75)
-#test.split=(nrow(dist)*0.25)
-
-
-#Train.descriptors=qsar.descriptors.cor[-c(1, 8, 13, 16, 18, 27, 32,34,35,40,48,51,52,54,60,68,71,79,85,92,93,100,106,107:115),]
-#Train.activity=qsar.activity[-c(1, 8, 13, 16, 18, 27, 32,34,35,40,48,51,52,54,60,68,71,79,85,92,93,100,106,107:115),]
-#Test.descriptors=qsar.descriptors.cor[c(1, 8, 13, 16, 18, 27, 32,34,35,40,48,51,52,54,60,68,71,79,85,92,93,100,106),]
-#Test.activity=qsar.activity[c(1, 8, 13, 16, 18, 27, 32,34,35,40,48,51,52,54,60,68,71,79,85,92,93,100,106),]
-
-#Train.descriptors=qsar.descriptors.cor[-c(9, 10, 15,  21, 22,29),]
-#Train.activity=qsar.activity[-c( 9, 10, 15,  21, 22,29),]
-#Test.descriptors=qsar.descriptors.cor[c( 9, 10, 15,  21, 22,29),]
-#Test.activity=qsar.activity[c( 9, 10, 15,  21, 22,29),]
-
-
-#Hat.unk= diag(Unknow %*% solve(t(Traind.pls) %*%(Traind.pls), tol=1e-40)  %*% t(Unknow))
-
-
-#knn.ad()
-#Kunknow=knnx.dist(data=Train.descriptors,vs.descritors.cpd, k=parameter.knn.ad, algorithm=c("cover_tree") ) 
-#assign("Kunknow", Kunknow, envir=.GlobalEnv)
-#print(Kunknow[,parameter.knn.ad]<Dc)
-#vs.descritors.inside.AD <- subset(vs.descritors.cpd,(Kunknow[,parameter.knn.ad]<Dc))
-#assign("vs.descritors.inside.AD", vs.descritors.inside.AD, envir=.GlobalEnv)
