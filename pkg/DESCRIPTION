@@ -2,14 +2,14 @@ Package: qsarr
 Type: Package
 Title: qsaR in R - A flexible framework for working with QSAR and QSPR
         in R
-Version: 1.6.1
-Date: 2015-6-2
+Version: 1.6.4
+Date: 2016-3-6
 Authors@R: c(person("Rodolpho C. Braga", "Developer", role = c("aut", "cre"),
                           email = "rodolphobraga@yahoo.com"),
                    person("Carolina H. Andrade", "Developer", role = c("ctb", "cph"), email = "carolina@farmacia.ufg.br"))     
 Author: Rodolpho C. Braga, with contributions from Carolina H. Andrade
 Maintainer: Rodolpho C. Braga <rodolphobraga@yahoo.com>
-Depends: R (>= 2.15)
+Depends: R (>= 2.15), caret
 Description: This project aims at building a flexible framework for working with QSAR in R. 
 License: BSD
 URL: http://qsarr.r-forge.r-project.org

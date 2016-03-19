@@ -214,14 +214,4 @@ model.multiclass <- function(model = modelFit, ... ){
 }
 
 
-# Function to check whether package is installed
-is.installed <- function(AMORE){
-  is.element(AMORE, installed.packages()[,1])
-} 
-
-# check if package "hydroGOF" is installed
-if (!is.installed("hydroGOF")){
-  install.packages("hydroGOF")
-}
-  
 
